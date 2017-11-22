@@ -1,0 +1,14 @@
+.idea/
+.gradle/
+gradle/
+build/
+gradlew*
+gradle-*
+*.iml
+
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar

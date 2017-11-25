@@ -1,0 +1,31 @@
+package com.megogo.operations.epg
+
+import com.megogo.clients.epg.VseTvEpgFeignClient
+import com.megogo.model.vsetv.VseTvProgramGuide
+import com.megogo.operations.common.SessionAttributes
+import com.megogo.utils.XmlDeserializationUtil
+import groovy.util.logging.Slf4j
+import org.springframework.stereotype.Component
+
+@Slf4j
+@Component
+class VseTvEpgOperations {
+    private VseTvEpgFeignClient vseTvEpgFeignClient
+    private SessionAttributes sessionAttributes
+
+    VseTvEpgOperations(VseTvEpgFeignClient vseTvEpgFeignClient,
+                       SessionAttributes sessionAttributes) {
+        this.vseTvEpgFeignClient = vseTvEpgFeignClient
+        this.sessionAttributes = sessionAttributes
+    }
+
+    VseTvProgramGuide getProgramGuideByChanelId(long chanelId) {
+        log.info("Trying to get program guide by chanel id: $chanelId")
+        String response = vseTvEpgFeignClient.getProgramGuideById(chanelId)
+        assert response : "Response is empty!"
+
+        VseTvProgramGuide programGuide = XmlDeserializationUtil.deserializeXml(response, VseTvProgramGuide)
+        sessionAttributes.addVseTvEpg(programGuide)
+        programGuide
+    }
+}

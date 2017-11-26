@@ -16,6 +16,6 @@ class MegogoProgramGuideTest extends BaseTest {
         megogoEpgOperations.getProgramGuideByChanelId(megogoChanelId)
 
         //Then
-        megogoEpgOperations.verifyAllProgramsPresentInVseTvResponse()
+        megogoEpgOperations.verifyMegogoProgramsAreEqualToVseTv()
     }
 }

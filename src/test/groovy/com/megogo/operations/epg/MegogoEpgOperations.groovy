@@ -3,6 +3,8 @@ package com.megogo.operations.epg
 import com.megogo.clients.epg.MegogoEpgFeignClient
 import com.megogo.enums.MegogoResponseStatus
 import com.megogo.model.megogo.MegogoProgramGuide
+import com.megogo.model.megogo.MegogoProgram
+import com.megogo.model.vsetv.VseTvProgram
 import com.megogo.model.vsetv.VseTvProgramGuide
 import com.megogo.operations.common.SessionAttributes
 import groovy.util.logging.Slf4j
@@ -27,18 +29,34 @@ class MegogoEpgOperations {
         response
     }
 
-    void verifyAllProgramsPresentInVseTvResponse(MegogoProgramGuide megogoProgramGuide = sessionAttributes.getMegogoEpg(),
-                                                 VseTvProgramGuide vseTvProgramGuide = sessionAttributes.getVseTvEpg()) {
+    void verifyMegogoProgramsAreEqualToVseTv(MegogoProgramGuide megogoProgramGuide = sessionAttributes.getMegogoEpg(),
+                                             VseTvProgramGuide vseTvProgramGuide = sessionAttributes.getVseTvEpg()) {
         assert megogoProgramGuide.result == MegogoResponseStatus.OK.status
 
-        //TODO need to refactor this!
-        log.info("VseTv programs list: ${vseTvProgramGuide}")
-        megogoProgramGuide.programGuides[0].programs.each { megogoProgram ->
-            assert vseTvProgramGuide.programs.find { vseTvProgram ->
-                vseTvProgram.start == megogoProgram.start
-                vseTvProgram.stop == megogoProgram.end
+        List<MegogoProgram> megogoPrograms = megogoProgramGuide.programGuides.first().programs
+        List<MegogoProgram> sortedMegogoPrograms = sortMegogoProgramsByStartDate(megogoPrograms)
+        Date megogoStart = sortedMegogoPrograms[0].start
+        Date megogoEnd = sortedMegogoPrograms[-1].start
+        List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.programs.findAll { it.start >= megogoStart && it.start <= megogoEnd }
+
+        assert vseTvProgramsByTimeRange.size() == sortedMegogoPrograms.size()
+        validateMegogoProgramsBasedOnVseTv(sortedMegogoPrograms, vseTvProgramsByTimeRange)
+    }
+
+    @SuppressWarnings("GrMethodMayBeStatic")
+    private List<MegogoProgram> sortMegogoProgramsByStartDate(List<MegogoProgram> megogoPrograms) {
+        megogoPrograms.sort { p1, p2 -> p1.start <=> p2.start }
+    }
+
+    @SuppressWarnings("GrMethodMayBeStatic")
+    private void validateMegogoProgramsBasedOnVseTv(List<MegogoProgram> megogoPrograms, List<VseTvProgram> vseTvPrograms) {
+        megogoPrograms.each { megogoProgram ->
+            assert vseTvPrograms.find { vseTvProgram ->
+                vseTvProgram.start == megogoProgram.start &&
+                vseTvProgram.stop == megogoProgram.end &&
                 vseTvProgram.title.title == megogoProgram.title
-            } : "Program with start time: ${megogoProgram.start}, end time: ${megogoProgram.end} and title: ${megogoProgram.title} not found in VseTv response"
+            }: "Megogo program with start time: ${megogoProgram.start}, end time: ${megogoProgram.end} and " +
+                    "title: ${megogoProgram.title} not found in VseTv programms. VseTv programs: \n $vseTvPrograms"
         }
     }
 }

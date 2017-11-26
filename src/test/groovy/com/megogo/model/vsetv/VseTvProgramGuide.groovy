@@ -15,5 +15,5 @@ class VseTvProgramGuide {
     String generatorInfoUrl
     Channel channel
     @JacksonXmlProperty(localName = "programme")
-    List<Program> programs
+    List<VseTvProgram> programs
 }

@@ -10,7 +10,7 @@ import groovy.transform.Canonical
 @Canonical
 @JsonDeserialize
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy)
-class Program {
+class MegogoProgram {
     Long externalId
     Long objectId
     String year

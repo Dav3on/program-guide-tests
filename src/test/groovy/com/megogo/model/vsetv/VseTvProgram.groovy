@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import groovy.transform.Canonical
 
 @Canonical
-class Program {
+class VseTvProgram {
     @JacksonXmlProperty(isAttribute = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss Z")
     Date start

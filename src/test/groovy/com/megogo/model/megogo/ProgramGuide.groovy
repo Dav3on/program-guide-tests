@@ -12,6 +12,6 @@ class ProgramGuide {
     Long id
     Long externalId
     String title
-    List<Program> programs
+    List<MegogoProgram> programs
     Map<String, String> pictures
 }

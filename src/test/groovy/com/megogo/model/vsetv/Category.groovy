@@ -9,5 +9,5 @@ class Category {
     @JacksonXmlProperty(isAttribute = true)
     String lang
     @JacksonXmlText
-    String category
+    String text
 }

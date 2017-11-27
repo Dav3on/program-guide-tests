@@ -9,5 +9,5 @@ class Genre {
     @JacksonXmlProperty(isAttribute = true)
     String lang
     @JacksonXmlText
-    String genre
+    String text
 }

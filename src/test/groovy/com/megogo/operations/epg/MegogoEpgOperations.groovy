@@ -56,9 +56,9 @@ class MegogoEpgOperations {
             assert vseTvPrograms.find { vseTvProgram ->
                 vseTvProgram.start == megogoProgram.start &&
                 vseTvProgram.stop == megogoProgram.end &&
-                vseTvProgram.title.title == megogoProgram.title
+                vseTvProgram.title.text == megogoProgram.title
             }: "Megogo program with start time: ${megogoProgram.start}, end time: ${megogoProgram.end} and " +
-                    "title: ${megogoProgram.title} not found in VseTv programms"
+                    "title text: ${megogoProgram.title} not found in VseTv programms"
         }
     }
 }

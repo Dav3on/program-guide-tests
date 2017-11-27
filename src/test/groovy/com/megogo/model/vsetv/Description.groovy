@@ -9,5 +9,5 @@ class Description {
     @JacksonXmlProperty(isAttribute = true)
     String lang
     @JacksonXmlText
-    String description
+    String text
 }

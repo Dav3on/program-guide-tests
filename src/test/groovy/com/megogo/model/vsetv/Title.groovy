@@ -9,5 +9,5 @@ class Title {
     @JacksonXmlProperty(isAttribute = true)
     String lang
     @JacksonXmlText
-    String title
+    String text
 }

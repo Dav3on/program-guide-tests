@@ -37,7 +37,8 @@ class MegogoEpgOperations {
         List<MegogoProgram> sortedMegogoPrograms = sortMegogoProgramsByStartDate(megogoPrograms)
         Date megogoStart = sortedMegogoPrograms[0].start
         Date megogoEnd = sortedMegogoPrograms[-1].start
-        List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.programs.findAll { it.start >= megogoStart && it.start <= megogoEnd }
+        List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.programs.findAll { program ->
+            program.start >= megogoStart  && program.start <= megogoEnd }
 
         assert vseTvProgramsByTimeRange.size() == sortedMegogoPrograms.size()
         validateMegogoProgramsBasedOnVseTv(sortedMegogoPrograms, vseTvProgramsByTimeRange)
@@ -50,13 +51,14 @@ class MegogoEpgOperations {
 
     @SuppressWarnings("GrMethodMayBeStatic")
     private void validateMegogoProgramsBasedOnVseTv(List<MegogoProgram> megogoPrograms, List<VseTvProgram> vseTvPrograms) {
+        log.info("VseTv programs: $vseTvPrograms")
         megogoPrograms.each { megogoProgram ->
             assert vseTvPrograms.find { vseTvProgram ->
                 vseTvProgram.start == megogoProgram.start &&
                 vseTvProgram.stop == megogoProgram.end &&
                 vseTvProgram.title.title == megogoProgram.title
             }: "Megogo program with start time: ${megogoProgram.start}, end time: ${megogoProgram.end} and " +
-                    "title: ${megogoProgram.title} not found in VseTv programms. VseTv programs: \n $vseTvPrograms"
+                    "title: ${megogoProgram.title} not found in VseTv programms"
         }
     }
 }

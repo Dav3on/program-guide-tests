@@ -52,13 +52,13 @@ class MegogoEpgOperations {
     @SuppressWarnings("GrMethodMayBeStatic")
     private void validateMegogoProgramsBasedOnVseTv(List<MegogoProgram> megogoPrograms, List<VseTvProgram> vseTvPrograms) {
         log.info("VseTv programs: $vseTvPrograms")
-        megogoPrograms.each { megogoProgram ->
-            assert vseTvPrograms.find { vseTvProgram ->
+        vseTvPrograms.each { vseTvProgram ->
+            assert megogoPrograms.find { megogoProgram ->
                 vseTvProgram.start == megogoProgram.start &&
                 vseTvProgram.stop == megogoProgram.end &&
                 vseTvProgram.title.text == megogoProgram.title
-            }: "Megogo program with start time: ${megogoProgram.start}, end time: ${megogoProgram.end} and " +
-                    "title text: ${megogoProgram.title} not found in VseTv programms"
+            }: "Megogo program with start time: ${vseTvProgram.start}, end time: ${vseTvProgram.end} and " +
+                    "title text: ${vseTvProgram.title} not found in VseTv programms"
         }
     }
 }

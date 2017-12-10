@@ -2,21 +2,18 @@ package com.megogo
 
 import com.megogo.configuration.CloudConfiguration
 import com.megogo.configuration.OperationsConfiguration
-import com.megogo.operations.epg.MegogoEpgOperations
 import com.megogo.operations.common.SessionAttributes
+import com.megogo.operations.epg.MegogoEpgOperations
 import com.megogo.operations.epg.VseTvEpgOperations
-import org.junit.After
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import spock.lang.Specification
 
-@RunWith(SpringJUnit4ClassRunner)
 @SpringBootTest(classes = [
-    CloudConfiguration,
-    OperationsConfiguration
+        CloudConfiguration,
+        OperationsConfiguration
 ])
-class BaseTest {
+class BaseTest extends Specification {
 
     @Autowired
     private SessionAttributes sessionAttributes
@@ -27,7 +24,6 @@ class BaseTest {
     @Autowired
     VseTvEpgOperations vseTvEpgOperations
 
-    @After
     void cleanup() {
         sessionAttributes.clearAllAttributes()
     }

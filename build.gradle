@@ -17,6 +17,7 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: "${groovyVersion}"
 
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: "${spockVersion}"
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springStarterVersion}"
     testCompile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: "${springStarterFeignVersion}"

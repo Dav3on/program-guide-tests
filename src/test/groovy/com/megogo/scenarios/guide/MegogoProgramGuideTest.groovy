@@ -1,21 +1,19 @@
 package com.megogo.scenarios.guide
 
 import com.megogo.BaseTest
-import org.junit.Test
 
 class MegogoProgramGuideTest extends BaseTest {
 
-    @Test
-    void "should return same program guide as vseTv returns"() {
-        //Given
+     void "should return same program guide as vseTv returns"() {
+        given:
         long vseTvChanelId = 3
         long megogoChanelId = 295
 
-        //When
+        when:
         vseTvEpgOperations.getProgramGuideByChanelId(vseTvChanelId)
         megogoEpgOperations.getProgramGuideByChanelId(megogoChanelId)
 
-        //Then
+        then:
         megogoEpgOperations.verifyMegogoProgramsAreEqualToVseTv()
     }
 }

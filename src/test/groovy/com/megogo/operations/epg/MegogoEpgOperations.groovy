@@ -37,9 +37,10 @@ class MegogoEpgOperations {
         List<MegogoProgram> sortedMegogoPrograms = sortMegogoProgramsByStartDate(megogoPrograms)
         Date megogoStart = sortedMegogoPrograms[0].start
         Date megogoEnd = sortedMegogoPrograms[-1].start
+        assert megogoEnd.date > megogoStart.date : "endDate should be greater then startDay at least for 1 day"
+
         List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.programs.findAll { program ->
             program.start >= megogoStart  && program.start <= megogoEnd }
-
         assert vseTvProgramsByTimeRange.size() == sortedMegogoPrograms.size()
         validateMegogoProgramsBasedOnVseTv(sortedMegogoPrograms, vseTvProgramsByTimeRange)
     }

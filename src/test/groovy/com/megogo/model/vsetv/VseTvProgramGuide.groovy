@@ -16,4 +16,9 @@ class VseTvProgramGuide {
     Channel channel
     @JacksonXmlProperty(localName = "programme")
     List<VseTvProgram> programs
+
+    List<VseTvProgram> findProgramsInTimerange(Date start, Date end) {
+        this.programs.findAll { program ->
+            program.start >= start  && program.start <= end }
+    }
 }

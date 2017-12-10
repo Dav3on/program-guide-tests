@@ -22,9 +22,9 @@ class MegogoEpgOperations {
         this.sessionAttributes = sessionAttributes
     }
 
-    MegogoProgramGuide getProgramGuideByChanelId(long chanelId) {
-        log.info("Trying to get program guide by chanel id: $chanelId")
-        MegogoProgramGuide response = megogoEpgFeignClient.getProgramGuideById(chanelId)
+    MegogoProgramGuide getProgramGuideByChannelId(long channelId) {
+        log.info("Trying to get program guide by channel id: $channelId")
+        MegogoProgramGuide response = megogoEpgFeignClient.getProgramGuideById(channelId)
         sessionAttributes.addMegogoEpg(response)
         response
     }
@@ -35,12 +35,12 @@ class MegogoEpgOperations {
 
         List<MegogoProgram> megogoPrograms = megogoProgramGuide.programGuides.first().programs
         List<MegogoProgram> sortedMegogoPrograms = sortMegogoProgramsByStartDate(megogoPrograms)
-        Date megogoStart = sortedMegogoPrograms[0].start
-        Date megogoEnd = sortedMegogoPrograms[-1].start
-        assert megogoEnd.date > megogoStart.date : "endDate should be greater then startDay at least for 1 day"
 
-        List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.programs.findAll { program ->
-            program.start >= megogoStart  && program.start <= megogoEnd }
+        Date megogoStart = sortedMegogoPrograms.first().start
+        Date megogoEnd = sortedMegogoPrograms.last().start
+        assert megogoEnd.date > megogoStart.date : "endDate should be greater then startDate at least for 1 day"
+        List<VseTvProgram> vseTvProgramsByTimeRange = vseTvProgramGuide.findProgramsInTimerange(megogoStart, megogoEnd)
+
         assert vseTvProgramsByTimeRange.size() == sortedMegogoPrograms.size()
         validateMegogoProgramsBasedOnVseTv(sortedMegogoPrograms, vseTvProgramsByTimeRange)
     }
@@ -58,8 +58,8 @@ class MegogoEpgOperations {
                 vseTvProgram.start == megogoProgram.start &&
                 vseTvProgram.stop == megogoProgram.end &&
                 vseTvProgram.title.text == megogoProgram.title
-            }: "Megogo program with start time: ${vseTvProgram.start}, end time: ${vseTvProgram.end} and " +
-                    "title text: ${vseTvProgram.title} not found in VseTv programms"
+            }: "VseTv program with start time: ${vseTvProgram.start}, end time: ${vseTvProgram.stop} and " +
+                    "title text: ${vseTvProgram.title} not found in Megogo programms: \n ${megogoPrograms}"
         }
     }
 }

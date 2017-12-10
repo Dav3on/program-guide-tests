@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable
 interface VseTvEpgFeignClient {
 
     //TODO define type after https://github.com/FasterXML/jackson-module-kotlin/issues/91 is done
-    @GetMapping(value =  "/epg/{chanelId}.xml", produces = MediaType.APPLICATION_XML_VALUE)
-    String getProgramGuideById(@PathVariable("chanelId") long chanelId)
+    @GetMapping(value =  "/epg/{channelId}.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    String getProgramGuideById(@PathVariable("channelId") long channelId)
 }

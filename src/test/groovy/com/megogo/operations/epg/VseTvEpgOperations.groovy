@@ -19,9 +19,9 @@ class VseTvEpgOperations {
         this.sessionAttributes = sessionAttributes
     }
 
-    VseTvProgramGuide getProgramGuideByChanelId(long chanelId) {
-        log.info("Trying to get program guide by chanel id: $chanelId")
-        String response = vseTvEpgFeignClient.getProgramGuideById(chanelId)
+    VseTvProgramGuide getProgramGuideByChannelId(long channelId) {
+        log.info("Trying to get program guide by channel id: $channelId")
+        String response = vseTvEpgFeignClient.getProgramGuideById(channelId)
         assert response : "Response is empty!"
 
         VseTvProgramGuide programGuide = XmlDeserializationUtil.deserializeXml(response, VseTvProgramGuide)
